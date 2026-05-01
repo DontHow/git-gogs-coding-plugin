@@ -2,33 +2,33 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project Overview
+## 项目概述
 
-This is a Claude Code plugin marketplace repository for the IMW team. It provides Git + Gogs workflow plugins that wrap common Git operations (create branch, commit/push, create PR, merge) as Claude Code skills.
+本仓库是 IMW 团队的 Claude Code 插件市场。它提供基于 Git + Gogs 工作流的插件，将常见 Git 操作（创建分支、提交/推送、创建 PR、合并）封装为 Claude Code 技能。
 
-## Repository Structure
+## 仓库结构
 
 ```
-.claude-plugin/marketplace.json          # Marketplace manifest (currently empty)
+.claude-plugin/marketplace.json          # 市场清单（当前为空）
 plugins/
   imw-git-gogs/
-    .claude-plugin/plugin.json           # Plugin manifest — name, description, version, author
+    .claude-plugin/plugin.json           # 插件清单 — 名称、描述、版本、作者
     skills/
-      imw-git-gogs-create-branch/SKILL.md
-      imw-git-gogs-commit-and-push/SKILL.md
-      imw-git-gogs-create-pr/SKILL.md
-      imw-git-gogs-merge/SKILL.md
+      create-branch/SKILL.md
+      commit-and-push/SKILL.md
+      create-pr/SKILL.md
+      merge/SKILL.md
 ```
 
-## Current State
+## 当前状态
 
-- This repository is a skeleton with empty SKILL.md files (0 bytes each) and an empty marketplace manifest.
-- The only populated file is `plugins/imw-git-gogs/.claude-plugin/plugin.json` which defines the plugin metadata.
-- No build system, package manager, tests, or CI configuration exists yet.
+- 本仓库为骨架项目，SKILL.md 文件均为空（0 字节），市场清单也为空。
+- 唯一有内容的文件是 `plugins/imw-git-gogs/.claude-plugin/plugin.json`，定义了插件元数据。
+- 目前尚未配置构建系统、包管理器、测试或 CI。
 
-## Plugin Format
+## 插件格式
 
-Each skill is defined by a `SKILL.md` file in its own directory under `plugins/<plugin>/skills/<skill-name>/`. The plugin manifest at `plugins/<plugin>/.claude-plugin/plugin.json` follows this structure:
+每个技能通过在 `plugins/<plugin>/skills/<skill-name>/` 目录下的 `SKILL.md` 文件定义。插件清单位于 `plugins/<plugin>/.claude-plugin/plugin.json`，结构如下：
 
 ```json
 {
@@ -39,7 +39,75 @@ Each skill is defined by a `SKILL.md` file in its own directory under `plugins/<
 }
 ```
 
-## Notes
+## 注意事项
 
-- Do not add build commands, test commands, or development workflows that do not exist in the repository.
-- If adding new skills, follow the existing directory naming convention: `imw-git-gogs-<action>`.
+- 不要添加仓库中不存在的构建命令、测试命令或开发工作流。
+- 如需添加新技能，请遵循现有目录命名约定：`<action>`。
+
+---
+
+## 编码行为指南
+
+行为准则，用于减少常见的 LLM 编码错误。可根据需要与项目专属说明合并使用。
+
+**权衡：** 这些准则偏向谨慎而非速度。对于简单任务，请自行判断。
+
+### 1. 编码前先思考
+
+**不要假设。不要隐藏困惑。提出权衡。**
+
+在实施之前：
+- 明确陈述你的假设。如果不确定，请提问。
+- 如果存在多种解释，请呈现出来 —— 不要默默选择。
+- 如果存在更简单的方法，请说出来。必要时提出反对意见。
+- 如果有不清楚的地方，停下来。指出困惑之处。提问。
+
+### 2. 极简优先
+
+**最精简的代码来解决问题。不做推测性设计。**
+
+- 不添加超出请求范围的功能。
+- 不为一次性代码创建抽象。
+- 不添加未被要求的"灵活性"或"可配置性"。
+- 不处理不可能出现的场景的错误。
+- 如果你写了 200 行而本来可以 50 行，重写它。
+
+问自己："资深工程师会觉得这过于复杂吗？"如果是，简化。
+
+### 3. 精准修改
+
+**只碰必须碰的。只清理自己制造的混乱。**
+
+编辑现有代码时：
+- 不要"改进"相邻的代码、注释或格式。
+- 不要重构没坏的东西。
+- 匹配现有风格，即使你自己会做得不同。
+- 如果你注意到不相关的死代码，提一下 —— 不要删除它。
+
+当你的变更产生孤儿代码时：
+- 删除你的变更导致未使用的导入/变量/函数。
+- 不要删除预先存在的死代码，除非被要求。
+
+检验标准：每一行变更都应该能直接追溯到用户的请求。
+
+### 4. 目标驱动执行
+
+**定义成功标准。循环验证直至达成。**
+
+将任务转化为可验证的目标：
+- "添加验证" → "为无效输入编写测试，然后让它们通过"
+- "修复 bug" → "编写能复现它的测试，然后让它通过"
+- "重构 X" → "确保重构前后测试都通过"
+
+对于多步骤任务，简要陈述计划：
+```
+1. [步骤] → 验证：[检查]
+2. [步骤] → 验证：[检查]
+3. [步骤] → 验证：[检查]
+```
+
+强有力的成功标准让你能独立迭代。弱标准（"让它工作"）需要不断澄清。
+
+---
+
+**这些准则生效的标志是：** diff 中不必要的变更更少，因过度复杂而重写的次数更少，澄清问题出现在实施之前而非出错之后。
