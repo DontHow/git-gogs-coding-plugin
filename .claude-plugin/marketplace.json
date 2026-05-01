@@ -1,0 +1,13 @@
+{
+  "name": "imw-tools",
+  "owner": {
+    "name": "IMW"
+  },
+  "plugins": [
+    {
+      "name": "imw-git-gogs",
+      "source": "./plugins/imw-git-gogs",
+      "description": "IMW Git + Gogs 工作流插件，支持创建分支、提交推送、合并目标分支和创建 Gogs PR。"
+    }
+  ]
+}

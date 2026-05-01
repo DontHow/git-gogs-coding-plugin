@@ -1,8 +1,8 @@
 {
   "name": "imw-git-gogs",
-  "description": "IMW 团队 Git + Gogs 工作流插件，支持创建开发分支、提交并推送、同步目标分支、生成 Gogs PR。",
+  "description": "IMW Git + Gogs 工作流插件，支持创建开发分支、提交并推送、同步目标分支、生成 Gogs PR。",
   "version": "1.0.0",
   "author": {
-    "name": "DontHow"
+    "name": "IMW"
   }
 }
