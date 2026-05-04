@@ -57,11 +57,18 @@ git rev-parse --abbrev-ref --symbolic-full-name @{u}
 - 目标分支不存在
 - 当前分支相对目标分支没有有效差异
 
-如果当前分支未推送或有未推送提交，必须暂停并询问是否推送当前分支。只允许：
+如果当前分支未推送或有未推送提交，必须暂停并询问是否推送当前分支。
+
+如果当前分支已有 upstream，执行：
 
 ```bash
 git push
-git push -u origin HEAD
+```
+
+如果当前分支没有 upstream，必须先基于 `git remote -v` 列出的 remote 让用户选择目标 remote，不得自动假设 `origin`：
+
+```bash
+git push -u <remote> HEAD
 ```
 
 推送完成后必须重新执行完整 PR 检查。
@@ -149,15 +156,18 @@ git rev-parse --abbrev-ref --symbolic-full-name @{u}
 git remote get-url <remote>
 ```
 
-从 remote URL 解析 `owner/repo`：
+从 remote URL 解析 `owner/repo`，必须兼容带 `.git` 与不带 `.git` 的形式：
 
 ```text
+https://<host>/<owner>/<repo>
 https://<host>/<owner>/<repo>.git
+git@<host>:<owner>/<repo>
 git@<host>:<owner>/<repo>.git
+ssh://git@<host>/<owner>/<repo>
 ssh://git@<host>/<owner>/<repo>.git
 ```
 
-解析后，如果 `mcp__gogs-pr__gogs_list_pull_requests` 可用，先检查是否已存在同 source/target 的 open PR；如已存在，不得重复创建，输出已有 PR。
+解析后，如果 `mcp__gogs-pr__gogs_list_pull_requests` 可用，先检查是否已存在同 head/base 的 open PR；如已存在，不得重复创建，输出已有 PR。
 
 用户确认创建后，必须优先调用：
 
@@ -165,15 +175,15 @@ ssh://git@<host>/<owner>/<repo>.git
 mcp__gogs-pr__gogs_create_pull_request
 ```
 
-按工具实际 schema 填入：
+调用前必须先读取该工具的实际 schema，按 schema 字段名精确填入；不得自创字段名。基于当前 Gogs MCP schema，字段映射如下：
 
 ```text
-owner:
-repo:
-source/head:
-target/base:
-title:
-body:
+owner: 解析自 remote URL
+repo:  解析自 remote URL
+head:  当前分支名（同仓库内传裸分支名）
+base:  用户指定的目标分支
+title: 已确认的 PR 标题
+body:  已确认的 PR 描述
 ```
 
 只有以下情况才允许降级为手动创建步骤：
