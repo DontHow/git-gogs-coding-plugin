@@ -58,12 +58,20 @@ git branch --show-current
 git status -sb
 git status --porcelain
 git rev-parse --abbrev-ref --symbolic-full-name @{u}
-git branch -r --list "*/<current-branch>"
+git remote
 git rev-parse -q --verify MERGE_HEAD
 git rev-parse -q --verify REBASE_HEAD
 git rev-parse -q --verify CHERRY_PICK_HEAD
 git show-ref --verify --quiet refs/heads/<target-branch>
-git show-ref --verify --quiet refs/remotes/origin/<target-branch>
+git show-ref --verify --quiet refs/remotes/<remote>/<target-branch>
+```
+
+远端目标分支必须基于 `git remote` 列出的 remote 名称逐个精确检查，不得硬编码 `origin`，也不得用正则假设 remote 名不含斜杠。
+
+检查当前分支是否已发布（用于 rebase 防护）时，同样必须基于 `git remote` 逐个 remote 精确检查：
+
+```bash
+git show-ref --verify --quiet refs/remotes/<remote>/<current-branch>
 ```
 
 如果当前分支存在 upstream，必须读取：

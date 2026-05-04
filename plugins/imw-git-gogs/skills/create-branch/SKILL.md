@@ -74,6 +74,7 @@ git for-each-ref --format='%(refname:short)' refs/remotes | grep -vE '/HEAD$'
 
 ```bash
 git show-ref --verify --quiet refs/heads/<source-branch>
+git remote
 git show-ref --verify --quiet refs/remotes/<remote>/<source-branch>
 ```
 
@@ -81,8 +82,11 @@ git show-ref --verify --quiet refs/remotes/<remote>/<source-branch>
 
 ```bash
 git show-ref --verify --quiet refs/heads/<new-branch>
-git for-each-ref --format='%(refname:short)' refs/remotes | grep -vE '/HEAD$' | grep -E '^[^/]+/<new-branch>$'
+git remote
+git show-ref --verify --quiet refs/remotes/<remote>/<new-branch>
 ```
+
+远端来源分支和远端同名新分支必须基于 `git remote` 逐个 remote 精确检查，不得用正则假设 remote 名不含斜杠。
 
 来源分支解析规则：
 

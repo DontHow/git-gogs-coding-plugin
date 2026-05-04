@@ -34,7 +34,7 @@ git rev-parse -q --verify MERGE_HEAD
 git rev-parse -q --verify REBASE_HEAD
 git rev-parse -q --verify CHERRY_PICK_HEAD
 git show-ref --verify --quiet refs/heads/<target-branch>
-git show-ref --verify --quiet refs/remotes/origin/<target-branch>
+git show-ref --verify --quiet refs/remotes/<remote>/<target-branch>
 git merge-base HEAD <target-ref>
 git log --oneline --left-right --cherry-pick <target-ref>...HEAD
 git diff --stat <target-ref>...HEAD
@@ -42,6 +42,8 @@ git diff --name-status <target-ref>...HEAD
 git diff <target-ref>...HEAD
 git rev-parse --abbrev-ref --symbolic-full-name @{u}
 ```
+
+远端目标分支必须基于 `git remote -v` 列出的 remote 名称逐个精确检查，不得硬编码 `origin`，也不得用正则假设 remote 名不含斜杠。
 
 需要刷新远端引用时，先单独确认 `git fetch --all --prune`，执行后重新检查。
 
