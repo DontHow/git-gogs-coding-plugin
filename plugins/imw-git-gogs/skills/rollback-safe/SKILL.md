@@ -44,6 +44,7 @@ git diff --name-status
 - 当前分支为空
 - 用户要求在保护分支直接写入回滚提交
 - 用户要求 force push、hard reset、clean 或直接丢弃全部工作区修改
+- 用户要求 `git revert`，但工作区不干净（有未提交或未暂存变更）
 
 ## 计划
 
@@ -71,7 +72,7 @@ git diff --name-status
 git restore --staged <file>
 ```
 
-回滚已提交内容：
+回滚已提交内容前必须确认工作区干净（`git status --porcelain` 输出为空）。如果工作区不干净，先用 `commit-and-push` 提交需要保留的变更，或在用户确认后 `git stash push -u` 暂存，再执行 revert：
 
 ```bash
 git revert <commit>
