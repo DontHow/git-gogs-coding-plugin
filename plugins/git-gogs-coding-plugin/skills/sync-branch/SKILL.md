@@ -5,7 +5,7 @@ description: Use when 用户用“更新到 dev”“同步目标分支”“把
 
 # Sync Branch
 
-先应用 `/imw-git-gogs:git-safety`。本 Skill 负责消除“同步/更新”类口语歧义，并把用户确认后的方案交给明确的 Git 流程执行。
+先应用 `/git-gogs-coding-plugin:git-safety`。本 Skill 负责消除“同步/更新”类口语歧义，并把用户确认后的方案交给明确的 Git 流程执行。
 
 ## 需要澄清的表达
 

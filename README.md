@@ -1,40 +1,68 @@
-# IMW Claude Code Plugins
+# coding-plugin
 
-IMW Git + Gogs 工作流插件，把高风险 Git 操作拆成可确认、可检查、可降级的 Skill。`git-safety` 是公共底线，其他 Skill 只写自己的工作流。
+Claude Code 插件市场，提供基于 Git + Gogs 的工作流 Skill。
+
+把高风险 Git 操作拆成可确认、可检查、可降级的 Skill：`git-safety` 是所有 Git Skill 的公共底线，其他 Skill 各负其责。
+
+## 仓库结构
+
+```
+.claude-plugin/marketplace.json          # 市场清单
+plugins/git-gogs-coding-plugin/
+  .claude-plugin/plugin.json             # 插件清单
+  skills/
+    git-safety/SKILL.md                  # 公共安全底线
+    create-branch/SKILL.md               # 创建开发分支
+    commit-and-push/SKILL.md             # 分析变更、提交并推送
+    merge/SKILL.md                       # 合并分支
+    create-pr/SKILL.md                   # 创建 Gogs PR
+    sync-branch/SKILL.md                 # 同步分支
+    resolve-conflict/SKILL.md            # 处理冲突
+    rollback-safe/SKILL.md               # 安全回滚
+```
 
 ## 安装
 
+在仓库根目录执行：
+
 ```bash
-claude plugin marketplace add .
-claude plugin install imw-git-gogs@imw-tools
+# 添加本地市场（建议限定到当前项目，避免污染全局配置）
+claude plugin marketplace add --scope project .
+
+# 安装插件
+claude plugin install --scope project git-gogs-coding-plugin@coding-plugin
 ```
 
-## Skills
+安装后，Skill 通过自然语言描述自动触发。例如：
 
-- `/imw-git-gogs:git-safety`：所有 Git Skill 的公共底线，不是业务工作流。
-- `/imw-git-gogs:create-branch`：从本地或远端来源分支创建新开发分支。
-- `/imw-git-gogs:commit-and-push`：分析当前变更，生成提交计划，确认后提交并按需推送。
-- `/imw-git-gogs:merge`：检查并确认后把来源分支合并到当前分支。
-- `/imw-git-gogs:create-pr`：生成 PR 内容，优先通过 `gogs-pr` MCP 创建 Gogs PR。
-- `/imw-git-gogs:sync-branch`：处理“同步 dev”“更新到目标分支”等方向不清的口语请求。
-- `/imw-git-gogs:resolve-conflict`：分析并确认后处理 merge/rebase/cherry-pick 冲突。
-- `/imw-git-gogs:rollback-safe`：用可审计方式撤销、回滚或放弃未完成 Git 操作。
+- "我要创建一个新分支" → 触发 `create-branch`
+- "提交当前改动并推送" → 触发 `commit-and-push`
+- "合并 dev 到当前分支" → 触发 `merge`
+- "创建 PR 到 main" → 触发 `create-pr`
 
-## 结构
+## 验证
 
-- `git-safety` 是所有 Git Skill 的公共底线，不是独立业务工作流。
-- 其他 Skill 只描述各自工作流，并在执行前遵守 `git-safety`。
+```bash
+# 验证市场清单
+claude plugin validate .
 
-## Gogs MCP
+# 验证插件清单
+claude plugin validate plugins/git-gogs-coding-plugin
+```
 
-`create-pr` 依赖运行环境提供 `gogs-pr` MCP 工具：
+## Skill 一览
 
-- `mcp__gogs-pr__gogs_create_pull_request`
-- `mcp__gogs-pr__gogs_list_pull_requests`
+| Skill | 用途 |
+|---|---|
+| `git-safety` | 公共底线：禁止破坏性命令、保护分支、写操作必须确认 |
+| `create-branch` | 从本地或远端来源分支创建新开发分支 |
+| `commit-and-push` | 分析当前变更，生成提交计划，确认后提交并按需推送 |
+| `merge` | 检查并确认后把来源分支合并到当前分支 |
+| `create-pr` | 生成 PR 内容，优先通过 `gogs-pr` MCP 创建 Gogs PR |
+| `sync-branch` | 处理"同步 dev""更新到目标分支"等方向不清的口语请求 |
+| `resolve-conflict` | 分析并确认后处理 merge/rebase/cherry-pick 冲突 |
+| `rollback-safe` | 用可审计方式撤销、回滚或放弃未完成 Git 操作 |
 
-如果 MCP 不可用、认证失败或无法从 `git remote` 解析 owner/repo，Skill 必须降级为输出手动创建 PR 的内容和原因。
+## 反馈
 
-## 维护
-
-- macOS 开发者建议配置全局 gitignore 忽略 `.DS_Store`。
-- 反馈渠道：通过 IMW 内部插件维护者或本仓库 issue 反馈 Skill 触发和流程问题。
+通过本仓库 issue 反馈 Skill 触发和流程问题。

@@ -1,16 +1,20 @@
 {
-  "name": "imw-tools",
-  "version": "0.1.0",
-  "homepage": "./README.md",
-  "repository": "./",
+  "name": "coding-plugin",
+  "metadata": {
+    "description": "DontHow 的 Claude Code 插件市场，提供基于 Git + Gogs 的工作流以及配套协作 Skill。"
+  },
   "owner": {
-    "name": "IMW"
+    "name": "DontHow"
   },
   "plugins": [
     {
-      "name": "imw-git-gogs",
-      "source": "./plugins/imw-git-gogs",
-      "description": "IMW Git + Gogs 工作流插件，提供 Git 安全底线以及建分支、提交推送、合并、Gogs MCP 建 PR、同步分支、冲突处理和安全回滚流程。"
+      "name": "git-gogs-coding-plugin",
+      "description": "Git + Gogs 工作流插件，提供 Git 安全底线以及建分支、提交推送、合并、Gogs MCP 建 PR、同步分支、冲突处理和安全回滚流程。",
+      "version": "0.1.0",
+      "source": "./plugins/git-gogs-coding-plugin",
+      "author": {
+        "name": "DontHow"
+      }
     }
   ]
 }

@@ -5,7 +5,7 @@ description: Use when 用户需要检查当前分支能否创建 Pull Request、
 
 # Create PR
 
-先应用 `/imw-git-gogs:git-safety`。本 Skill 只负责当前分支发起 PR，不负责提交普通代码、同步目标分支、解决冲突或合并 PR。
+先应用 `/git-gogs-coding-plugin:git-safety`。本 Skill 只负责当前分支发起 PR，不负责提交普通代码、同步目标分支、解决冲突或合并 PR。
 
 ## 语义
 

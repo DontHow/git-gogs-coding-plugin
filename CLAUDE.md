@@ -11,7 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```
 .claude-plugin/marketplace.json          # 市场清单
 plugins/
-  imw-git-gogs/
+  git-gogs-coding-plugin/
     .claude-plugin/plugin.json           # 插件清单 — 名称、描述、版本、作者
     skills/
       git-safety/SKILL.md

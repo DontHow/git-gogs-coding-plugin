@@ -5,7 +5,7 @@ description: Use when 用户需要从现有本地或远端分支创建新的 Git
 
 # Create Branch
 
-先应用 `/imw-git-gogs:git-safety`。本 Skill 只负责从已存在的来源分支创建新开发分支，不负责提交、推送、merge、rebase、创建 PR、解决冲突或回滚。
+先应用 `/git-gogs-coding-plugin:git-safety`。本 Skill 只负责从已存在的来源分支创建新开发分支，不负责提交、推送、merge、rebase、创建 PR、解决冲突或回滚。
 
 ## 需要明确的信息
 
