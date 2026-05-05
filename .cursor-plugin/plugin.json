@@ -1,0 +1,24 @@
+{
+  "name": "git-gogs-coding-plugin",
+  "displayName": "Git Gogs Coding Plugin",
+  "description": "Git + Gogs 工作流插件，提供 Git 安全底线以及建分支、提交推送、合并、Gogs MCP 建 PR、同步分支、冲突处理和安全回滚流程。",
+  "version": "0.1.0",
+  "author": {
+    "name": "DontHow"
+  },
+  "homepage": "https://github.com/DontHow/coding-plugin",
+  "repository": "https://github.com/DontHow/coding-plugin",
+  "license": "MIT",
+  "keywords": [
+    "git",
+    "gogs",
+    "workflow",
+    "branch",
+    "commit",
+    "merge",
+    "pull-request",
+    "rollback",
+    "conflict"
+  ],
+  "skills": "./plugins/git-gogs-coding-plugin/skills/"
+}

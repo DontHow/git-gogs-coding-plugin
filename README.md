@@ -7,9 +7,9 @@ Claude Code 插件市场，提供基于 Git + Gogs 的工作流 Skill。
 ## 仓库结构
 
 ```
-.claude-plugin/marketplace.json          # 市场清单
+.claude-plugin/marketplace.json          # Claude Code 市场清单
 plugins/git-gogs-coding-plugin/
-  .claude-plugin/plugin.json             # 插件清单
+  .claude-plugin/plugin.json             # Claude Code 插件清单
   skills/
     git-safety/SKILL.md                  # 公共安全底线
     create-branch/SKILL.md               # 创建开发分支
@@ -19,6 +19,10 @@ plugins/git-gogs-coding-plugin/
     sync-branch/SKILL.md                 # 同步分支
     resolve-conflict/SKILL.md            # 处理冲突
     rollback-safe/SKILL.md               # 安全回滚
+
+.codex-plugin/plugin.json                # Codex 插件配置
+.cursor-plugin/plugin.json               # Cursor 插件配置
+.opencode/plugins/git-gogs-coding-plugin.js  # OpenCode 插件
 ```
 
 ## 安装
