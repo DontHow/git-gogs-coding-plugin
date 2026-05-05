@@ -6,22 +6,28 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 本仓库是 IMW 团队的 Claude Code 插件市场。它提供基于 Git + Gogs 工作流的插件，将 Git 公共安全底线和常见工作流封装为 Claude Code 技能。
 
+本仓库同时维护 Claude Code、Codex、Cursor 和 OpenCode 四端插件配置，skills 目录为共享内容。
+
 ## 仓库结构
 
 ```
-.claude-plugin/marketplace.json          # 市场清单
+.claude-plugin/marketplace.json          # Claude Code 市场清单
 plugins/
   git-gogs-coding-plugin/
-    .claude-plugin/plugin.json           # 插件清单 — 名称、描述、版本、作者
+    .claude-plugin/plugin.json           # Claude Code 插件清单
     skills/
-      git-safety/SKILL.md
-      create-branch/SKILL.md
-      commit-and-push/SKILL.md
-      merge/SKILL.md
-      create-pr/SKILL.md
-      sync-branch/SKILL.md
-      resolve-conflict/SKILL.md
-      rollback-safe/SKILL.md
+      git-safety/SKILL.md                # 公共安全底线
+      create-branch/SKILL.md             # 创建开发分支
+      commit-and-push/SKILL.md           # 分析变更、提交并推送
+      merge/SKILL.md                     # 合并分支
+      create-pr/SKILL.md                 # 创建 Gogs PR
+      sync-branch/SKILL.md               # 同步分支
+      resolve-conflict/SKILL.md          # 处理冲突
+      rollback-safe/SKILL.md             # 安全回滚
+
+.codex-plugin/plugin.json                # Codex 插件配置
+.cursor-plugin/plugin.json               # Cursor 插件配置
+.opencode/plugins/git-gogs-coding-plugin.js  # OpenCode 插件
 ```
 
 ## 当前状态
@@ -30,11 +36,14 @@ plugins/
 - `git-safety` 不是工作流；它定义所有 Git Skill 必须遵守的公共禁令。
 - 工作流 Skill 包括 `create-branch`、`commit-and-push`、`merge`、`create-pr`、`sync-branch`、`resolve-conflict`、`rollback-safe`。
 - `create-pr` 优先依赖运行环境中的 `gogs-pr` MCP 创建 Gogs PR，不可用时降级为手动创建内容。
+- 已配置 Codex、Cursor、OpenCode 三端插件配置，skills 目录为共享内容，各平台 manifest 指向 `./plugins/git-gogs-coding-plugin/skills/`。
 - 目前尚未配置构建系统、包管理器、测试或 CI；验证以结构检查和内容检查为主。
 
 ## 插件格式
 
-每个技能通过在 `plugins/<plugin>/skills/<skill-name>/` 目录下的 `SKILL.md` 文件定义。插件清单位于 `plugins/<plugin>/.claude-plugin/plugin.json`，结构如下：
+### Claude Code
+
+市场清单位于 `.claude-plugin/marketplace.json`，插件清单位于 `plugins/<plugin>/.claude-plugin/plugin.json`：
 
 ```json
 {
@@ -45,10 +54,40 @@ plugins/
 }
 ```
 
+### Codex
+
+配置位于 `.codex-plugin/plugin.json`，含 `skills` 和 `interface` 字段：
+
+```json
+{
+  "name": "plugin-id",
+  "version": "x.y.z",
+  "skills": "./plugins/git-gogs-coding-plugin/skills/",
+  "interface": { "displayName": "...", "category": "Coding", ... }
+}
+```
+
+### Cursor
+
+配置位于 `.cursor-plugin/plugin.json`：
+
+```json
+{
+  "name": "plugin-id",
+  "displayName": "...",
+  "skills": "./plugins/git-gogs-coding-plugin/skills/"
+}
+```
+
+### OpenCode
+
+插件为 JavaScript 模块，位于 `.opencode/plugins/git-gogs-coding-plugin.js`，通过 `config` hook 注册 skills 目录路径。
+
 ## 注意事项
 
 - 不要添加仓库中不存在的构建命令、测试命令或开发工作流。
 - 如需添加新技能，请遵循现有目录命名约定：`<action>`，并先判断是否属于公共底线还是独立工作流。
+- 新增或修改跨平台配置时，保持各端 `name`、`version`、`description` 一致，skills 路径统一指向 `./plugins/git-gogs-coding-plugin/skills/`。
 
 ---
 
